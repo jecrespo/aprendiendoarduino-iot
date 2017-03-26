@@ -60,9 +60,10 @@ void loop()
       digitalWrite(7, LOW);
       Serial.println("APAGO");
     }
-    iotkit.send("freno", sensorValue);
+    iotkit.send("onoffButton", sensorValue);
     lastread = sensorValue;
   }
+
 }
 
 void callback(char* json) {
@@ -78,15 +79,16 @@ void sendTemp()
 
   float temperature = 1.0 / (log(R / 100000.0) / B + 1 / 298.15) - 273.15; //convert to temperature via datasheet ;
 
-  Serial.print("temperature = ");
+  Serial.print("panel_temperature = ");
   Serial.println(temperature);
 
-  iotkit.send("temperatura", temperature);
+  iotkit.send("panel_temperature", temperature);
 
-  int sensorValue = analogRead(1); 
-  float Rsensor=(float)(1023-sensorValue)*10/sensorValue;
+  int sensorValue = analogRead(1);
+  Serial.print("solar_radiation = ");
+  Serial.println(sensorValue);
 
-  iotkit.send("distancia", Rsensor);
+  iotkit.send("solar_radiation", sensorValue);
 
 }
 
