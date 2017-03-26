@@ -16,6 +16,9 @@
 #include <Ethernet.h>  // must be included to use IoTkit
 #include "Timer.h"                     //http://github.com/JChristensen/Timer
 
+#define SERVER "109.228.56.48"
+#define APIKEY "Bearer APIKEY"
+
 const int TouchPin = 6;
 const int ledPin = 5;
 
@@ -28,6 +31,8 @@ IoTkit iotkit;
 
 boolean lastread;
 
+EthernetClient client;
+
 void setup()
 {
   Serial.begin(115200);
@@ -37,14 +42,13 @@ void setup()
   pinMode(ledPin, OUTPUT);
   pinMode(7, OUTPUT);
   lastread = digitalRead(TouchPin);
-  t.every(15000, sendTemp);
+  t.every(5000, sendData);
+
 }
 
 void loop()
 {
   t.update();
-
-  iotkit.receive(callback);
 
   int sensorValue = digitalRead(TouchPin);
   if (sensorValue != lastread)
@@ -66,11 +70,7 @@ void loop()
 
 }
 
-void callback(char* json) {
-  Serial.println(json);
-}
-
-void sendTemp()
+void sendData()
 {
   int a = analogRead(pinTempSensor);
 
@@ -90,5 +90,57 @@ void sendTemp()
 
   iotkit.send("solar_radiation", sensorValue);
 
+  retriveData();
+
+}
+
+void retriveData() {
+  Serial.println("Retrieve Data");
+  if (client.connect(SERVER, 80)) {   // If theres a successful connection
+    Serial.println(F("connected"));
+    // Build the data field
+    //String json = "{\"protocol\":\"v2\",\"device\":\"" + DEVICE_ID + "\",\"at\":\"now\",\"data\":{\"door\":\"" + txt + "\"}}";
+    String json = "{\"from\": -10,\"targetFilter\": {\"deviceList\": [\"AA-AA-AA-AA-AA-AA\"]},\"metrics\": [{\"id\": \"654c0298-0e0f-4cf8-97d9-af15d23bcb7c\",\"op\": \"none\"}]}";
+    Serial.println(json);      // For debugging purpose only
+
+    // Make a HTTP request
+    client.println("POST /v1/api/accounts/0671b6c3-f957-423e-949a-32540d3c589d/data/search HTTP/1.1");
+    client.println("Host: 109.228.56.48");
+    client.print("Authorization: ");
+    client.println (APIKEY);
+    client.println("Content-Type: application/json");
+    client.print("Content-Length: ");
+    int thisLength = json.length();
+    client.println(thisLength);
+    client.println("Connection: close");
+    client.println();
+
+    client.println(json);
+  }
+  else {
+    // If you didnt get a connection to the server:
+    Serial.println(F("connection failed"));
+  }
+
+  delay (1000);
+  String webString = "";
+  if (client.available()) {
+    Serial.println("Respuesta del Servidor---->");
+    while (client.available()) {
+      char c = client.read();
+      webString += c;
+    }
+    //Serial.println(webString);
+
+    if (webString.endsWith("\"points\":[]}]}")){
+      Serial.println("No new data");
+    }
+    else {
+      int data = webString.lastIndexOf("\"}]}]}");
+      Serial.println(webString.substring(data-1,data));
+    }
+
+    client.stop();
+  }
 }
 
