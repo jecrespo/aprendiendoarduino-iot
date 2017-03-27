@@ -19,7 +19,7 @@
 #include "rgb_lcd.h"
 
 #define SERVER "109.228.56.48"
-#define APIKEY "Bearer KEY
+#define APIKEY "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJqdGkiOiIzMThmZjdhNS05YjVmLTRhMzAtYTcwZC1iMzk5NTlkOWZkMTYiLCJpc3MiOiJodHRwOi8vZW5hYmxlaW90LmNvbSIsInN1YiI6ImYzMjg1ZjY3LWIzZjQtNDQyNy1hMDVmLTg3NjU3MWJkOWYzNyIsImV4cCI6IjIwMTctMDMtMjdUMTY6NDM6MjYuNDcwWiIsImFjY291bnRzIjp7IjA2NzFiNmMzLWY5NTctNDIzZS05NDlhLTMyNTQwZDNjNTg5ZCI6ImFkbWluIn19.dv6jXCbe6VpRjppLvH19XTnBkC3j_3SYMubNg6NHQmYlE037ic4ga6Lp-oFN2L3OJeHs4f5k-h-Pcs0dQ4g_Tv6Jo8O7lDZXWdZYHTE5hyGmVoLLDIXS5xuoqZx66ZEbaPQYUjmu_K1w7AT8y7SUrLXmsp-vgwr0NP6JIjzP1PQ"
 
 const int TouchPin = 6;
 const int ledPin = 5;
@@ -126,7 +126,7 @@ void retriveData() {
     //Serial.println(F("connected"));
     // Build the data field
     //String json = "{\"protocol\":\"v2\",\"device\":\"" + DEVICE_ID + "\",\"at\":\"now\",\"data\":{\"door\":\"" + txt + "\"}}";
-    String json = "{\"from\": -100,\"targetFilter\": {\"deviceList\": [\"AA:AA:AA:AA:AA:01\"]},\"metrics\": [{\"id\": \"99563fbf-eda2-4f41-96a8-dd9f87380d3c\",\"op\": \"none\"}]}";
+    String json = "{\"from\": -100,\"targetFilter\": {\"deviceList\": [\"AA:AA:AA:AA:AA:01\"]},\"metrics\": [{\"id\": \"56af18f5-c9d6-49fc-a4a3-7697f17de655\",\"op\": \"none\"}]}";
     //Serial.println(json);      // For debugging purpose only
 
     // Make a HTTP request

@@ -152,6 +152,7 @@ void loop() {
   }else{
     lcdEmitter.printDisplay("Node disabled", 1);
   }
+  delay(2000);
 }
 
 
