@@ -19,7 +19,7 @@
 #include "rgb_lcd.h"
 
 #define SERVER "109.228.56.48"
-#define APIKEY "Bearer KEY"
+#define APIKEY "Bearer KEY
 
 const int TouchPin = 6;
 const int ledPin = 5;
