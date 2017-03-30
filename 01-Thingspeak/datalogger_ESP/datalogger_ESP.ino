@@ -1,13 +1,13 @@
 #include "ThingSpeak.h"
-#include <SPI.h>
-#include <Ethernet.h>
+#include <ESP8266WiFi.h>
 #include "Timer.h"
 
 #define DHT22_PIN 7
 
-byte mac[] = {0x90, 0xA2, 0xDA, 0x0F, 0x70, 0xYY};	//Sustituir YY por el numero de MAC correcto
+const char* ssid     = "AndroidAP4628";
+const char* password = "password";
 
-EthernetClient client;
+WiFiClient client;
 Timer t;
 
 boolean estado_boton;
@@ -18,17 +18,24 @@ const char * myWriteAPIKey = "APIKEY";
 void setup() {
   pinMode(6, INPUT_PULLUP);
   estado_boton = digitalRead(6);
-  if (Ethernet.begin(mac) == 0) {
-    Serial.println("Failed to configure Ethernet using DHCP");
-    for (;;)
-      ;
-  }
-  else {
-    Serial.print("IP asignada por DHCP: ");
-    Serial.println(Ethernet.localIP());
-  }
   ThingSpeak.begin(client);
   Serial.begin(9600);
+  Serial.println("inicializando red...");
+  Serial.print("Connecting to ");
+  Serial.println(ssid);
+
+  WiFi.begin(ssid, password);
+
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+  }
+
+  Serial.println("");
+  Serial.println("WiFi connected");
+  Serial.println("IP address: ");
+  Serial.println(WiFi.localIP());
+  Serial.println("Iniciando datalogger...");
   t.every(5000, grabaDatos);
 }
 

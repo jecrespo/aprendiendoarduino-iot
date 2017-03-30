@@ -5,7 +5,11 @@
 
 #define DHT22_PIN 7
 
-byte mac[] = {0x90, 0xA2, 0xDA, 0x0F, 0x70, 0xYY};	//Sustituir YY por el numero de MAC correcto
+byte mac[] = { 0x90, 0xA2, 0xDA, 0x10, 0xB3, 0xBD};
+byte ip[] = {10, 22, 72, 31};
+byte DNS[] = {8, 8, 8, 8};
+byte gateway[] = {10, 22, 72, 1};
+byte subnet[] = {255, 255, 255, 0};
 
 EthernetClient client;
 Timer t;
@@ -18,15 +22,7 @@ const char * myWriteAPIKey = "APIKEY";
 void setup() {
   pinMode(6, INPUT_PULLUP);
   estado_boton = digitalRead(6);
-  if (Ethernet.begin(mac) == 0) {
-    Serial.println("Failed to configure Ethernet using DHCP");
-    for (;;)
-      ;
-  }
-  else {
-    Serial.print("IP asignada por DHCP: ");
-    Serial.println(Ethernet.localIP());
-  }
+  Ethernet.begin(mac, ip, DNS, gateway, subnet);
   ThingSpeak.begin(client);
   Serial.begin(9600);
   t.every(5000, grabaDatos);
