@@ -1,11 +1,8 @@
 /*
   Write Temperature and humidity from DHT22 probe with a arduino ethernet2 shield connection
-
   ThingSpeak ( https://www.thingspeak.com ) is an analytic IoT platform service that allows you to aggregate, visualize and
   analyze live data streams in the cloud.
-
   Based on thingspeak arduino library examples
-
   by aprendiendoarduino: www.aprendiendoarduino.com
 */
 
