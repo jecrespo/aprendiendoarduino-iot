@@ -1,13 +1,10 @@
-#include <Ethernet.h>
-#include <SPI.h>
+#include <ESP8266WiFi.h>
 #include "Adafruit_MQTT.h"
 #include "Adafruit_MQTT_Client.h"
 
 /************************* Ethernet Client Setup *****************************/
-byte mac[] = {0x90, 0xA2, 0xDA, 0x10, 0xB3, 0xBD};
-
-IPAddress iotIP (10, 22, 72, 31);
-IPAddress dnsIP (8, 8, 8, 8);
+const char* ssid     = "AndroidAP4628";
+const char* password = "password";
 
 /************************* Adafruit.io Setup *********************************/
 
@@ -20,7 +17,7 @@ IPAddress dnsIP (8, 8, 8, 8);
 /************ Global State (you don't need to change this!) ******************/
 
 //Set up the ethernet client
-EthernetClient client;
+WiFiClient client;
 
 Adafruit_MQTT_Client mqtt(&client, AIO_SERVER, AIO_SERVERPORT, AIO_USERNAME, AIO_KEY);
 
@@ -46,7 +43,20 @@ void setup() {
 
   // Initialise the Client
   Serial.print(F("\nInit the Client..."));
-  Ethernet.begin(mac, iotIP, dnsIP);
+  Serial.print("Connecting to ");
+  Serial.println(ssid);
+
+  WiFi.begin(ssid, password);
+
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+  }
+
+  Serial.println("");
+  Serial.println("WiFi connected");
+  Serial.println("IP address: ");
+  Serial.println(WiFi.localIP());
   delay(1000); //give the ethernet a second to initialize
 
   mqtt.subscribe(&onoffbutton);

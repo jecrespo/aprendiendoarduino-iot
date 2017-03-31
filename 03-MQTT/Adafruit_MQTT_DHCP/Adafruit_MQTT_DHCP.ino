@@ -4,10 +4,7 @@
 #include "Adafruit_MQTT_Client.h"
 
 /************************* Ethernet Client Setup *****************************/
-byte mac[] = {0x90, 0xA2, 0xDA, 0x10, 0xB3, 0xBD};
-
-IPAddress iotIP (10, 22, 72, 31);
-IPAddress dnsIP (8, 8, 8, 8);
+byte mac[] = {0x90, 0xA2, 0xDA, 0x0F, 0x70, 0xYY};	//Sustituir YY por el numero de MAC correcto
 
 /************************* Adafruit.io Setup *********************************/
 
@@ -46,7 +43,15 @@ void setup() {
 
   // Initialise the Client
   Serial.print(F("\nInit the Client..."));
-  Ethernet.begin(mac, iotIP, dnsIP);
+  if (Ethernet.begin(mac) == 0) {
+    Serial.println("Failed to configure Ethernet using DHCP");
+    for (;;)
+      ;
+  }
+  else {
+    Serial.print("IP asignada por DHCP: ");
+    Serial.println(Ethernet.localIP());
+  }
   delay(1000); //give the ethernet a second to initialize
 
   mqtt.subscribe(&onoffbutton);
