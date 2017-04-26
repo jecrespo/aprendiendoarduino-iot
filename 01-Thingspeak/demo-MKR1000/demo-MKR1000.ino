@@ -30,7 +30,7 @@ WiFiClient client;
 DHT sondaT(DHT22_PIN, DHTTYPE);
 
 unsigned long myChannelNumber = 251351;
-const char * myWriteAPIKey = "MIKEY";
+const char * myWriteAPIKey = "MIAPI";
 
 void setup() {
 
@@ -53,16 +53,14 @@ void setup() {
     Serial.println(ssid);
     // Connect to WPA/WPA2 network. Change this line if using open or WEP network:
     status = WiFi.begin(ssid, pass);
-
-    // wait 10 seconds for connection:
-    delay(10000);
-
-    Serial.println("Connected to wifi");
-    printWifiStatus();
-
-    ThingSpeak.begin(client);
-
   }
+  // wait 10 seconds for connection:
+  delay(10000);
+
+  Serial.println("Connected to wifi");
+  printWifiStatus();
+
+  ThingSpeak.begin(client);
 }
 
 void loop() {
