@@ -52,13 +52,13 @@ void setup() {
 
     // wait 10 seconds for connection:
     delay(10000);
-
-    Serial.println("Connected to wifi");
-    printWifiStatus();
-
-    ThingSpeak.begin(client);
-
   }
+
+  Serial.println("Connected to wifi");
+  printWifiStatus();
+
+  ThingSpeak.begin(client);
+
 }
 
 void loop() {
